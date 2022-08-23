@@ -1,0 +1,1164 @@
+*, ::before, ::after{              /*ici on procède a un reset css très commun*/
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html{
+    scroll-behavior: smooth;              /*ici on aura au js des animation scroll donc on met une propirété smooth lorsque ça va scroller*/
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+    background: #f1f1f1;
+}
+
+/*--------------- Navigation -----------------------*/
+
+.nav-gauche{
+    width: 300px;               /*largeur de la nav barre de 300px*/
+    height: 100vh;              /*hauteur relative à 100% de l'écran (de ce que l'on voit) donc même lorsque l'user va scroller il verra cette nav barre */
+    min-height: 800px;          /* ici on accorde une hauteur minimum de 800px afin que la nav barre ne se modifie pas en dessous de cette limite*/
+    background: #333;           /*on met une couleur de fond*/
+    position: fixed;                /*signifie que la nav barre restera fixe même lors d'un scroll*/
+    top: 0px;                         /*la position étant fixe on lui met une prop de 0 au top et de 0 a gauche pour qu'elle reste dans la même position*/
+    left: -300px; 
+    border-right: 1px dashed #f1f1f1;    /*on défini une bordure à droite de 1px, en pointillé et d'une certaine couleur*/
+    z-index: 5;                             /*on applique une couche pour que la nav barre reste visible en mode responsive*/
+    transition: all 0.2s ease-in-out; 
+}
+
+.bloc-menu{
+    width: 100%;                                /*Prend 100% de la largeur de navbar (son parent)*/
+    height: 10%;                                /* prend 10% de hauteur sur la nav barre (son parent) */
+    display: flex;                              /*on met flex pour pouvoir par la suite centrer les div en hauteur et en largeur par rapport à la nav-barre*/
+    justify-content: center;                    /*Permet de centrer sur l'axe X */
+    align-items: center;                        /*Permet de centrer sur l'axe Y */
+}
+
+.bloc-menu span {                               /*on vient styliser les liens que l'on a mis dans des span pour les futures transitions */
+    font-size: 19px;                            /* modifie la taille de la police */
+    text-align: center;                         /* vient centrer la span dnas la div (son parent) */
+    position: relative;                         /* pour pouvoir positionner un enfant en postion relative par rapport au span */
+    font-weight: 700;                           /* modifie la graisse de la police */
+    cursor: pointer;                            /* modifie le curseur pour montrer plus facilement que l'on peut cliquer sur les liens */
+}
+
+.bloc-menu span a{                                /*modifie les liens en eux-mêmes */
+    text-decoration: none;                        /* retire le trait sous les liens*/
+    color: #f1f1f1;                             /* modifie la couleur de la police*/
+}
+
+.bloc-menu span::after {                           /*créer un pseudo élément sur les liens*/
+    content:"";                                    /* si pas de content on est obligé de mettre les guillemets */
+    display: block;                                /* normalement inline mais on met block pour pouvoir lui donner hauteur et largeur */
+    width: 0px;                                    /* défini la largeur sur 0 en début d'animation */
+    margin: 5px auto 0 auto;                       /* défini une marghe de 5px en bas, automatique à droite 0 en haut et auto à gauche */ 
+    height: 2px;                                   /* défini la hauteur à 2px */
+    border-radius: 2px;                            /* arrondi les angles */ 
+    background: #aaa;                            /* modifie la couleur de fond  */  
+    transition: all 0.2s ease-out;                 /* initialise la transition à l'écoute de tout (all) qui dure 0.2s et et lent à la fin (ease-out) */  
+}
+
+.bloc-menu span:hover::after{
+    width: 100%;  /* ici on met 100% pour que le trait souligne la totalité du span*/
+}
+
+/*Portrait*/
+
+.bloc-menu:nth-child(1){                            /* on sélectionne le premier bloc-menu afin de pouvoir le styliser */
+    width: 100%;                                    /* on lui donne une largeur de 100% de son parent (nav-gauche)*/
+    height: 25%;                                    /* on lui donne une hauteur de 25% de son parent (nav-gauche) */
+    background-color: #333;                       /*on lui met une couleur de fond*/
+}
+
+.cercle-portrait {
+    margin: 20px 0;                                   /* on met une marge de 20px en haut et en bas et de 0 à gauche et à droite*/
+    width: 150px;                                     /*  on applique une largeur...*/   
+    height: 150px;                                    /* ... et une hauteur*/
+    border-radius: 50%;                               /*Et on arrondi au max le carré créée pour en faire un cercle*/  
+    position: relative;                               /* on applique une postion relative pour que son enfant se place comme il faut */  
+    box-shadow: 26px 26px 53px #292929,             /*On fait une ombre au cercle pour lui donner un style morphing et du relief*/
+                -26px -26px 53px #3d3d3d;                 
+}
+
+.cercle-portrait img {                                /* on s'occupe de l'image dans le cercle */
+    width: 100px;                                     /* on lui applique une largeur */
+    position: absolute;                               /* on le place par rapport à son parent en absolute pour pouvoir le centrer par la suite*/
+    top: 50%;                                         /*on commence par le top...*/ 
+    left: 50%;                                        /*...puis à gauche */
+    transform: translate(-50%, -50%);                 /* enfin on ajuste pour que l'img soit parfaitement centrée*/
+}
+.logo-cercle{                                         /* au tour de notre dernière image */
+    width: 100px;                                     /* largeur*/
+    height: 100px;                                    /*hauteur*/
+    border-radius: 50%;                               /* on crée un cercle*/ 
+    position: absolute;                               /* en absolute pour placer son enfant */  
+    bottom: 40px;
+    cursor: pointer;
+}
+
+.logo-cercle img{                                     /* on s'occupe de l'image dans le cercle */
+    width: 70px;                                      /* on lui applique une largeur */
+    position: absolute;                               /* on le place dans son parent */
+    top: 50%;                                         /*et nous... */
+    left: 50%;                                        /* ...le... */
+    transform: translate(-50%, -50%);                 /* ...centrons! */
+}
+
+/* création bouton menu */
+
+@media screen and (max-width: 1300px) {             /*ici le coté responsive à lire "jusqu'à 1330px*/
+
+    .nav-gauche {
+        left: -300px!important;                     /*on fait partir la barre de nav de la gauche (hors de l'écran*/
+
+        width: 250px;                               /*on lui donne une largeur de 250px*/
+        min-height: 300px;                          /*elle ne pourra pas aller en dessous de 300px de uteur*/                                                
+        display: flex;                              /*on lui met display flex pour pouvoir modifier les liens*/
+        justify-content: center;                    /*On centre*/
+        align-items: center;                        /*On centre*/
+        flex-direction: column;                     /*on les met en colonnes*/
+    }
+    .menu-visible {                                 /*on crée une classe menu-visible pour le js*/
+        left: 0px!important;                        /*on fait apparaître le menu sur la gauche */
+    }
+    .bloc-menu:nth-child(1){                        
+        display: none;                              /*on retire la premiere image */
+    }
+    .bloc-menu:nth-child(7){
+        display: none;                              /*Et on retire la dernière*/
+    }
+
+    .btn-rond-menu {                                /*on créée le bouton du menu*/
+        width: 70px;                                /*sa largeur*/
+        height: 70px;                               /*sa hauteur*/
+        border: 1px solid #f1f1f1;                /*sa bodure blanche*/
+        border-radius: 50%;                         /*on fait un cercle*/
+        background: #333;                         /*couleur de fond*/
+        position: fixed;                            /*on fait en sorte que sa position soit fixe...*/
+        top: 10px;                                  /*...à 10px du top...*/
+        left: 10px;                                 /*...10de la gauche */
+        z-index: 20;                                /*et un zindex supérieur a nav-gauche pour qu'il soit toujours au dessus*/
+
+    }
+    .cont-ligne {                                   /*on créée le conteneur pour les 3 lignes du menu*/
+        width: 36px;                                /*hauteur*/
+        height: 36px;                               /*largeur*/
+        cursor: pointer;                            /*on indique que l'on peut cliquer avec un curseur adapté*/
+        position: absolute;                         /*on le positionne par rapport à son parent*/
+        top: 50%;                                   /*Et on...*/
+        left: 50%;                                  /*...le...*/
+        transform: translate(-50%,-50%);            /*...centre*/
+    }
+
+    .ligne-unique{                                   /*on crée la première ligne */
+        width: 100%;                                 /*largeur*/
+        height: 4px;                                 /*hauteur*/
+        border-radius: 5px;                          /*arrondir un peu les extremités*/
+        background-color: #f1f1f1;                 /*on lui donne une couleur de fond*/ 
+        position: absolute;                          /* on la positionne par rapport a son parent*/
+        top: 50%;                                    /*Et on...*/   
+        left: 50%;                                   /*...la...*/
+        transform: translate(-50%,-50%);             /*...centre dans le conteneur*/
+    }
+
+    .ligne-unique::before{                            /*création de la ligne du haut du bouton*/
+        content: "";
+        width: 100%;
+        height: 4px;
+        border-radius: 5px;
+        background: #f1f1f1;
+        position: absolute;
+        bottom: 10px;
+      
+    }
+     .ligne-unique::after{                           /*création de la ligne du bas */
+        content: "";                                 /* si pas de content on est obligé de mettre ""*/
+        width: 100%;                                 /* largeur*/   
+        height: 4px;                                 /*hauteur*/
+        border-radius: 5px;                          /*on arrondi l'extrémité*/
+        background: #f1f1f1;                       /*on applique une couleur de fond*/ 
+        position: absolute;                          /*et on positionne la ligne par rapport à son parent*/   
+        top: 10px;                                   /* de 10 pixel par rapport au bas du container*/
+    }
+
+    .cont-ligne.active .ligne-unique::after{         /*Mise en place de la transi pour barre du bas*/
+        top: 0;                                      /*transition pour rotation une barre sur les deux*/
+        transform: rotate(45deg);                    /* rotation à 45deg de la barre du haut */
+        transition: top 300ms ease, transform 300ms 300ms ease; /*mise en place de la transition vers le haut*/
+    }
+    .cont-ligne.active .ligne-unique{               /* mise en tranparence de ma ligne du mid*/
+        background: transparent;                    
+    }
+    .cont-ligne.active .ligne-unique::before{       /*mise en place de la transi pour barre du haut*/
+        bottom: 0;
+        transform: rotate(-45deg);
+        transition: bottom 300ms ease, transform 300ms 300ms ease;
+    }
+}
+
+/*-----------ACCUEIL -------------------*/
+
+.accueil {                                      /* mise en place de la page d'"accueil*/
+    background: url(ressources/accueil.jpg);    /* image de fond */
+    background-repeat: no-repeat;               /*on fait en sorte que l'image ne se dupplique pas */
+    background-size: cover;                     /*elle recouvre toute la surface de la page */
+    background-position: right;                 /*on se focus sur le coté droit de la page */
+    height: 100vh;                              /*on lui donne une hauteur de toute la surface visible de la page */
+    min-height: 900px;                          /*elle ne pourra pas aller en dessous de 900px de hauteur*/
+    width: calc(100% - 300px);                  /*en largeur elle prend 100% de la page moins les 300 de la nav barre */
+    position: relative;                         /*on la place par rapport a body*/
+    margin-left: auto;                          /*on applique une marge gauche auto*/
+}
+
+h1{                                             /*Titre */
+    font-size: 90px;                            /*Taille de la police */
+    font-family: 'Abril Fatface', sans-serif;   /*Police d'écriture */
+    margin: 0 60px;                             /* pas de marge en haut ou en bas mais une de 60px a gauche et a droite*/
+    padding-top: 210px;                         /*on décolle de 210px le titre du top*/
+}
+
+.txt-animation {                                
+    font-size: 30px;                            /*Taille de la police de la phrase animée*/
+    margin: 10px 0 10px 60px;                  /*On applique une marge en haut, 0 a droite 10 en bas et 60 a gauche */  
+}
+
+.btn-acc {                                  /*Les boutons */
+    display: inline-flex;                   /*Permet de garder les éléments en ligne et de les flex */
+    width: 200px;                           /*largeur*/
+    height: 50px;                           /*Hauteur*/
+    text-decoration: none;                  /*On retire les attrait de liens classiques*/
+    background-color: #000;               /*Couleur de fond*/
+    justify-content: center;                /*On centre le contenu sur l'axe X*/
+    align-items: center;                    /*On centre sur l'axe Y le contenu*/
+    color: #f1f1f1;                       /*Couleur de police*/
+    margin: 10px 0 0 0;                  
+    border-radius: 10px;                    /*on arrondi le carré*/ 
+    font-size: 18px;                        /*Taille de la police*/
+    transition: transform 0.2s ease-in-out; /* On programme une transition qu is'appelle transforme qui dure 0.2s et ease in out => lent-rapide-lent*/
+}
+
+.btn-acc:hover{                           /*On met une animation sur le survol de la souris */     
+    transform: scale(1.02);               /*Effet de grossissement des boutons au survol */
+}
+
+.btn-acc1{                                 /*On prend le bouton portfolio*/
+    margin: 10px 0 0 60px;                 /*on met une marge de 60 a gauche pour le décoller de la barre de nav*/
+}
+.btn-acc2{                                  /*on s'occupe du bouton Experiences*/
+  background-color: transparent;            /*Couleur de fond transparent */
+  border: 2px solid black;                /*On met une bordure solide noire de 2px*/
+  color: black;                           /*Police d'écriture en noire*/
+  font-weight: 700;                         /*Graisse de la police */
+}
+
+.medias {                                   /*conteneur des boutons réseaux sociaux*/
+    display: flex;                          /*Pour pouvoir le bouger*/
+    margin-left: 60px;                      /**marge gauche de 60px*/
+    margin-top: 30px;                       /*Marge top de 30px par rapport aux boutons du dessus*/
+}
+
+.media{                                     /*Les boutons en eux mêmes*/
+    width: 60px;                            /*Largeur*/
+    height: 60px;                           /*Hauteur */
+    background: #333;                     /*Coueleur de fond */
+    border-radius: 50%;                     /*On crée un rond*/
+    margin-right: 10px;                     /*Petite marge de 10px a droite*/
+    display: flex;                          /*On les flex pour centrer les images en leur milieu*/
+    justify-content: center;                /*Centrer sur l'axe X */
+    align-items: center;                    /*Centrer sur l'axe Y*/
+    cursor: pointer;                        /*Curseur adapté pour cliquer*/
+}
+.media2 {                                   /*On s'occupe du bouton du milieu*/
+    background: transparent;                /*Fond transparent */
+    border: 2px solid #333;               /*bordure solide de 2px couleur grise */
+}
+
+.icone-medias{                              /*Images des réseaux sociaux*/
+    width: 30px;                            /*Largeur de 30px*/
+}
+
+.btn-rond{                          /*création d'une animation pulse pour le bouton*/
+    width: 70px;                    /*largeur*/
+    height: 70px;                   /*hauteur*/
+    position: absolute;             /*positionnement par rapport à son parent*/
+    bottom: 20px;                   /* 20pixels du bottom*/   
+    left: 60px;                     /*60 pixel du left*/
+    border-radius: 50%;             /*On fait un rond*/
+    display: flex;                  /*on le me en flex pour pouvoir centrer son contenu*/
+    justify-content: center;        /*centré sur X*/
+    align-items: center;            /*centré sur y*/
+    cursor: pointer;                /*on change le curseur pour indiquer que 'lon peut cliquer dessus*/
+    box-shadow: 0 0 0 0 #333;     /*On crée une ombre pour l'animation*/
+    background-color: #333;       /*on met une couleur de fond*/
+    animation: pulse 1.3s infinite  /* on progamme l'animation avec son nom sa durée et cb de temps elle dure*/
+}
+
+@keyframes pulse {                  /*création de l'animation avec @keyframes + nom de l'animation*/
+    to{
+        box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.01); /*on rajoute l'ombre sur l'animation pour faire l'effet pulse*/
+    }
+}
+
+.logo-btn-acc{                  /*la fleche vers le bas */
+    width: 35px;                /*Largeur*/
+}   
+
+/*responsive accueil*/
+
+@media screen and (max-width: 1300px) {
+    .accueil{
+      width: 100%; 
+      background-position: center;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    accueil{
+        height: 700px;
+        min-height: 0;
+    }
+    h1{
+        font-size: 70px;
+        margin: 0 30px 0 30px;
+        padding-top: 100px;
+    }
+    .accueil p{
+        margin: 20px 0 20px 30px;
+    }
+    .medias{
+        margin-left: 30px;
+    }
+    .btn-acc1{
+        margin: 10px 0 0 30px;
+    }
+    .btn-rond{
+        display: none;
+    }
+}
+
+@media screen and (max-width: 700px){
+    .accueil{
+        height: 600px;
+    }
+    h1{
+     font-size: 50px;
+     margin: 0 30px;   
+    }
+    .accueil p {
+        font-size: 20px;
+    }
+    .btn-rond-menu {
+        width: 60px;
+        height: 60px;
+    }
+
+}
+
+@media screen and (max-width: 500px){
+    h1{
+        font-size: 35px;
+    }
+    .accueil p {
+        font-size: 16px;
+    }
+    .btn-acc {
+        width: 120px;
+        font-size: 13px;
+        height: 40px;
+        margin: 10px 0 0 5px;
+    }
+    .btn-acc1 {
+       margin: 10px 0 0 30px; 
+    }
+    .media{
+        width: 40px;
+        height: 40px;
+    }
+    .medias{
+        margin-top: 20px;
+    }
+    .icone-medias {
+        width: 20px;
+    }
+}
+
+
+@media screen and (max-width: 450px){
+    .btn-rond-menu{
+        height: 50px;
+        width: 50px;
+    }
+    .cont-ligne{
+        width: 20px;
+        height: 38px;
+    }
+    .ligne-unique{
+       height: 3px; 
+    }
+    .line-unique::before{
+        bottom: 8px; 
+        height: 3px;
+    }
+    .ligne-unique::after{
+        top: 8px;
+        height: 3px;
+
+    }
+    .accueil {
+        height: 500px;
+    }
+    h1{
+        margin: 0 30px 0 5px;
+        padding-top: 120px;
+    }
+    .accueil p{
+        margin: 30px 0 0 5px;
+    }
+    .btn-acc{
+      width: 100px;
+      font-size: 12px;
+      height: 35px;
+      margin: 30px 0 0 5px;   
+    }
+    .medias{
+        margin-top: 20px;
+        margin-left: 5px;
+    }
+    .icone-medias{
+        width: 20px;
+    }
+}
+
+@media screen and (max-width: 380px){
+    .txt-animation{
+        font-size: 15px!important;
+    }
+}
+@media screen and (max-width: 370px){
+    .txt-animation{
+        font-size: 13px!important;
+    }
+}
+
+
+/*---------Section présentation----------*/
+
+.presentation{
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    border-top: 1px dashed #333;
+    border-bottom: 1px dashed #333;
+    color: #e7e7e7;
+}
+
+.fond-forme{
+    background-color: #485563;
+    background-image: linear-gradient(to right, #29323c, #485563);
+    width: 2300px;
+    height: 1000px;
+    position: absolute;
+    transform: rotate(-45deg) translateX(100px) translateY(-15px);
+    z-index: -1;
+}
+
+.titre-pres{
+    font-size: 40px;
+    text-align: center;
+    margin: 50px 0 70px 0;
+    padding-left: 300px;
+}
+
+.container-presentation{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin: 50px 0 120px 0 ;
+    flex-shrink: 0;
+    padding-left: 300px;
+}
+
+.pres-gauche{
+    width: 600px;
+    flex-shrink: 0;
+    margin-bottom: 50px;
+    padding-left: 120px;
+    padding-top: 20px;
+}
+
+.pres-gauche h3{
+    text-align: center;
+    font-size: 25px;
+    letter-spacing: 2px;
+}
+
+.pres-gauche hr{
+    width: 60px;
+    margin: 0 auto 20px auto;
+}
+
+.pres-gauche p{
+   text-align: justify; 
+}
+
+.pres-droite{
+    width: 600px;
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-start;
+
+}
+.liste-presentation{
+    list-style-type: none;
+    padding: 10px 0 50px 110px;
+}
+.chiffre-style {
+    font-family: 'Abril Fatface', sans-serif;
+    font-size: 40px;
+}
+.txt-liste{
+    font-size: 27px;
+    display: inline;
+}
+
+/*Média presentation*/
+
+@media screen and (max-width: 1300px){
+    .container-presentation{
+        padding-left: 0px;
+    }
+    .titre-pres{
+        padding-left: 0px;
+    }
+}
+
+@media screen and (max-width: 1100px){
+    .fond-forme{
+        width: 100%;
+        height: 150%;
+        transform: rotate(0) translateX(0) translateY(0);
+    }
+    .titre-pres{
+        margin: 0 0 20px 0 ;
+        padding-top: 50px;
+    }
+    .container-presentation{
+        flex-direction: column;
+    }
+    .pres-gauche{
+        width: 80%;
+        flex-shrink: 1;
+        margin-bottom: 10px;
+        padding: 20px 0;
+    }
+    .pres-gauche h3{
+        font-size: 20px;
+        letter-spacing: 0px;
+    }
+    .pres-gauche p{
+       font-size: 16px;
+       
+    }
+    .pres-droite{
+        width: 80%;
+        flex-shrink: 1;
+    }
+    .liste-presentation{
+        padding: 0 0;
+    }
+}
+
+@media screen and (max-width: 700px){
+    .container-presentation{
+        margin-top: 10px;
+        margin-bottom: 70px;
+    }
+    .titre-pres{
+        font-size: 24px;
+        margin: 0 10px;
+    }
+    .pres-gauche h3{
+        font-size: 20px;
+    }
+    .chiffre-style{
+        font-size: 30px;
+    }
+    .txt-liste{
+    font-size: 17px;
+    }
+}
+
+/*-------Section Portfolio------------*/
+
+.portfolio{
+    width: 100%;
+}
+.titre-port{
+    text-align: center;
+    padding: 50px 0;
+    font-size: 50px;
+    padding-left: 300px;
+}
+
+.cont-portfolio{
+    width: 100%;
+    height: auto;
+    margin: 0 auto 100px auto;
+    padding-left: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.item{
+    margin: 20px;
+    width: 420px;
+    height: 400px;
+    background-color: #f0f2f0;
+    color: #333;
+    transition: transform 0.3s ease-out;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.item:hover{
+    transform: translateY(-5px);
+}
+
+.cont-img-port{
+    width: 100%;
+    height: 220px;
+    overflow: hidden;
+}
+.cont-img-port img{
+    width: 100%;
+    height: auto;
+}
+.item h3{
+    padding: 10px 10px 0;
+    font-size: 22px;
+
+}
+.item p{
+    padding: 10px 10px 0;
+}
+.btn-projets{
+   display: block;
+   margin: 10px;
+   width: 180px;
+   height: 50px;
+   line-height: 50px;
+   text-align: center;
+   color: #333;
+   text-decoration: none;
+   border: 1px solid #333;
+   border-radius: 3px;
+   cursor: pointer;
+   position: relative;
+   overflow: hidden;
+}
+
+.btn-projets::after{
+    content:''; 
+    height: 240px;
+    width: 100px;
+    background: rgba(255, 255, 255, 0.4);
+    display: block;
+    position: absolute;
+    left: -150px;
+    top: -50px;
+    transform: rotate(-45deg);
+}
+
+.btn-projets:hover::after{
+    transition: transform 0.3s 0.1s linear;
+    transform: translateX(400px);
+}
+
+/*Media Portfolio*/
+
+@media screen and (max-width:1300px){
+    .cont-portfolio{
+        padding-left: 0;
+    }
+    .titre-port{
+        font-size: 40px;
+        margin: 50px 0 70px;
+        padding-left: 0;
+    }
+}
+@media screen and (max-width:500px){
+    .titre-port{
+        margin: 10px 0 10px;
+        padding: 30px 0;
+    }
+    .item{
+        height: 420px;
+    }
+    .cont-img-port{
+        height: auto;
+    }
+}
+@media screen and (max-width:340px){
+    .item{
+        height: 380px;
+    }
+}
+
+/* --------Mes compétences---------  */
+
+.section-range{
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding-bottom: 200px;
+    border-bottom: 1px dashed #333;
+    background-color: #485563;
+    background-image: linear-gradient(to right, #29323c, #485563);
+    color: #f1f1f1;
+    position: relative;
+    z-index: -1;
+}
+.range-cont{
+    position: relative;
+}
+.titre-exp{
+    font-size: 40px;
+    text-align: center;
+    margin: 80px 0 90px 0;
+    padding-left: 300px;
+}
+.grille-skill{
+    display: grid;                                     /*pouvoir faire une grille*/
+    grid-template: repeat(3, 80px) / repeat(2, 500px); /*3 rangées de 80px et 2 colonnes de 500px*/
+    grid-gap: 50px;                                    /*Espace entre les cases (la goutière entre les cases)*/
+    padding-left: 300px;                               /*décaler par rapport au menu*/   
+}
+.barre-skill{
+    height: 15px;
+    background-color: rgb(167, 146, 243);
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+.barre-grises{
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    bottom: 0;
+    width: 500px;
+    height: 15px;
+    background-color: rgb(216, 216, 216);
+    border-radius: 5px;
+}
+.b1{
+    width: 90%;
+}
+.b2{
+    width: 75%;
+    background: rgb(243, 237, 146);
+}
+.b3{
+    width: 70%;
+    background:rgb(243, 237, 146); 
+}
+.b4{
+    width: 80%;
+}
+.b5{
+    width: 70%;
+}
+.b6{
+    width: 80%;
+    background: rgb(243, 237, 146);
+}
+
+.label-skill{
+    font-size: 24px;
+}
+
+
+/*Média compétences*/
+
+
+@media screen and (max-width:1400px){
+    .grille-skill{
+        grid-template: repeat(3,80px) / (2, 450px)
+    }
+    .barre-grises{
+        width: 450px;
+    }
+}
+
+@media screen and (max-width:1300px){
+    .section-range{
+        padding-left: 0;
+    }
+    .titre-exp{
+        padding-left: 0;
+    }
+    .grille-skill{
+        grid-template: repeat(6,80px) / 600px;
+        padding-left: 0;
+    }
+    .barre-grises{
+        width: 600px; 
+    }
+}
+
+@media screen and (max-width:700px){
+    .grille-skill{
+        grid-template: repeat(6,80px) / 400px
+    }
+    .barre-grises{
+        width: 400px;
+    }
+}
+
+@media screen and (max-width:450px){
+    .section-range{
+        padding-bottom: 100px;
+    }
+    .titre-exp{
+        font-size: 30px;
+        margin: 50px 0 60px 0; 
+    }
+    .label-skill{
+        font-size: 20px;
+    }
+    .grille-skill{
+        grid-template: repeat(6,80px) / 300px;
+        grid-gap: 40px; 
+    }
+    .barre-grises{
+        width: 300px;
+    }
+}
+
+/* ------Section expérience ------- */
+
+.travail-exp{
+    width: calc(100% - 300px);
+    height: auto;
+    margin-left: auto;
+    padding-bottom: 100px;
+}
+
+.titre-travail-exp{
+    text-align: center;
+    margin: 70px 0;
+    font-size: 40px;
+    color: #333;
+}
+
+.cont-exp-travail{
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+
+.barre-verticale{
+    height: 1000px;
+    width: 5px;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    left: -30px;
+}
+
+.boule-ico{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 1px solid #333;
+    background: #f1f1f1;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+}
+
+.boule-ico img{
+    width: 25px; 
+}
+
+.flex-cont-bloc-exp{
+    width: 800px;
+    flex-shrink: 1;
+    height: 1000px;
+    position: relative;
+}
+
+.bloc{
+    width: 100%;
+    height: 200px;
+    margin-bottom: 37.5px;
+    cursor: pointer;
+    border: 1px solid #333;
+    position: relative;
+}
+
+.contenu-bloc{
+    padding: 20px;
+    width: 100%;
+    height: 100%; 
+    border: 2px solid black;
+    background-color: white;
+    transition: transform 0.25s ease-in-out;
+    position: relative;
+    transform: translate(10px, -10px); 
+}
+
+.contenu-bloc:hover{
+    transform: translate(0,0); 
+}
+.bloc1{
+    background-color: #fb97a0;
+}
+.bloc2{
+    background: #bfe2ca;
+}
+.bloc3{
+    background: #a6daef;
+}
+.bloc4{
+    background: #d0e2ec;
+}
+.titre-section-bloc{
+    font-family: 'Abril Fatface', sans sans-serif;
+    font-size: 25px;
+    padding-bottom: 10px;
+}
+
+/*Média expériences*/
+
+@media screen and (max-width: 1300px){
+    .travail-exp{
+        width: 100%;
+    }
+}
+@media screen and (max-width: 900px){
+    .barre-verticale{
+        height: 1200px;
+    }
+    .bloc{
+        height: 250px;
+        margin-bottom: 37.5px;
+    }
+    .barre-verticale{
+        margin-left: 60px;
+    }
+    .flex-cont-bloc-exp {
+        margin-right: 30px;
+    }
+}
+
+@media screen and (max-width: 520px){
+    .txt-section{
+        font-size: 16px;
+    }
+    .bloc{
+        height: 400px;
+    }
+    .barre-verticale{
+        height: 1800px
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .txt-section{
+       font-size: 15px; 
+    }
+}
+
+/*Section Parallax*/
+
+.section-parallax{
+    width: 100%;
+    height: 250px;
+    background: url(/ressources/accueil.jpg) no-repeat right / cover fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px dashed #333;
+    border-bottom: 1px dashed #333;
+}
+.txt-par{
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0 50px;
+}
+
+.txt-par:nth-child(1){
+    padding-left: 300px;
+}
+
+@media screen and (max-width: 1300px){
+    .txt-par{
+        font-size: 25px;
+        margin: 0 30px;
+    }
+    .txt-par:nth-child(1){
+        padding-left: 0px;
+    }
+}
+@media screen and (max-width: 700px){
+    .txt-par{
+        font-size: 22px;
+        margin: 0 25px;
+    }
+}
+
+@media screen and (max-width: 550px){
+    .section-parallax{
+        flex-direction: column;
+    }
+    .txt-par{
+        font-size: 20px;
+        margin: 20px 0;
+    }
+}
+
+
+/* Section Contact  */
+
+.section-contact{
+    width: 100%;
+    height: auto ;
+}
+.section-contact h2{
+    text-align: center;
+    color: #333;
+    font-size: 48px;
+    font-weight: 400;
+    margin-bottom: 50px;
+    padding: 70px 0 0 300px;
+}
+.section-contact h2 strong {
+    font-weight: 900;
+}
+
+.container-form{
+    margin: 0 auto;
+    width: 70%;
+    padding-left: 300px;
+}
+.form-group{
+    position: relative;
+    display: flex;
+    margin-bottom: 45px;
+}
+
+.form-group label {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    color: #aaa;
+    font-size: 20px;
+    transition: 0.4s ease-out;
+}
+
+.form-group input{
+    display: block;
+    width: 100%;
+    padding: 10px 0px; 
+    border: none;
+    outline: none;
+    background: none;
+    border-bottom: 3px solid #aaa;
+    color: #666;
+    font-size: 20px;
+    transition: 0.4 ease-out;
+}
+
+textarea {
+    width: 100%;
+    height: 200px;
+    border: none;
+    border:3px solid #aaa; 
+    border-radius: 3px; 
+    padding: 5px; 
+    resize: none;
+    outline: none;
+    font-size: 20px;
+    transition: 0.4s all ease-out;
+    background: #f1f1f1;  
+}
+textarea::placeholder{
+    font-size: 20px;
+    opacity: 0.5;
+}
+
+textarea:focus{
+    border-color: #8b97d7;
+}
+.form-group:nth-child(4){
+    margin-bottom: 25px;
+    justify-content: flex-start;
+}
+.form-group .button-sub{
+    display: block;
+    width: auto;
+    padding: 15px 60px;
+    border: 3px solid rgb(144, 144, 144);
+    border-radius: 999px;
+    text-align: center;
+    background-image: linear-gradient(to right, transparent 50%, rgb(65,65,65) 50%, rgb(134,134,134));
+    background-size: 200%;
+    color: #333;
+    font-size: 24px;
+    font-weight: 500;
+    cursor: pointer; 
+}
+
+.form-group .button-sub:hover{
+    color: #fff;
+    background-position: 100%;
+    border: 3px solid #fff;
+}
+
+@media screen and (max-width: 1300px){
+    .section-contact h2{
+        padding: 70px 0 0 0;
+    }
+    .container-form{
+        padding-left: 0;
+    }
+    .form-group:nth-child(4){
+       justify-content: center; 
+    }
+}
+
+
+/*Animation contact*/
+.form-group:focus-within label, 
+.form-group.animation label{
+    top: 0px;
+    transform: translateY(-100%);
+    color: #8b97d7;
+}
+
+/*Footer*/
+
+footer{
+    width: 100%;
+    text-align: center;
+    padding-top: 100px;
+    padding-left: 300px;
+}
+
+@media screen and (max-width: 1300px){
+    footer {
+        padding-left: 0px;
+    }
+}
